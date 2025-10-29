@@ -22,13 +22,8 @@ final class ViewModelFactory {
     private var currentUserService: CurrentUserServiceProtocol { container.resolve(CurrentUserServiceProtocol.self) }
     private var gameService: GameServiceProtocol { container.resolve(GameServiceProtocol.self) }
     private var userService: UserServiceProtocol { container.resolve(UserServiceProtocol.self) }
-
-    private var sessionService: SessionServiceProtocol {
-        SessionService(currentUserService: currentUserService,
-                       gameService: gameService,
-                       userService: userService,
-                       coordinator: coordinator)
-    }
+    private var tokenRepository: TokenRepositoryProtocol { container.resolve(TokenRepositoryProtocol.self) }
+    private var sessionService: SessionServiceProtocol { container.resolve(SessionServiceProtocol.self) }
 
     func makeAvailableGamesViewModel() -> AvailableGamesViewModel {
         AvailableGamesViewModel(coordinator: coordinator,
@@ -40,6 +35,14 @@ final class ViewModelFactory {
 
     func makeInProgressGamesViewModel() -> InProgressGamesViewModel {
         InProgressGamesViewModel(coordinator: coordinator,
+                                 apiService: apiService,
+                                 currentUserService: currentUserService,
+                                 gameService: gameService,
+                                 errorHandler: errorHandler)
+    }
+    
+    func makeFinishedGamesViewModel() -> FinishedGamesViewModel {
+        FinishedGamesViewModel(coordinator: coordinator,
                                  apiService: apiService,
                                  currentUserService: currentUserService,
                                  gameService: gameService,
@@ -58,6 +61,7 @@ final class ViewModelFactory {
                         currentUserService: currentUserService,
                         userService: userService,
                         sessionService: sessionService,
+                        tokenRepository: tokenRepository,
                         coordinator: coordinator,
                         errorHandler: errorHandler)
     }
@@ -82,5 +86,11 @@ final class ViewModelFactory {
         GamesContainerViewModel(coordinator: coordinator,
                                 sessionService: sessionService,
                                 errorHandler: errorHandler)
+    }
+    
+    func makeLeaderboardViewModel() -> LeaderboardViewModel {
+        LeaderboardViewModel(apiService: apiService,
+                             currentUserService: currentUserService,
+                             errorHandler: errorHandler)
     }
 }
