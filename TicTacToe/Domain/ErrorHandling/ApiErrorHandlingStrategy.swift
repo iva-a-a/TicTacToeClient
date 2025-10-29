@@ -22,14 +22,12 @@ final class ApiErrorHandlingStrategy: ErrorHandlingStrategy {
         case .unauthorized:
             do {
                 try await sessionService.resetSession()
-                return .logout("Session expired or invalig login/password. Please sign in again. ")
+                return .logout("Session expired. Please sign in again. ")
             } catch {
                 return .message("Failed to reset session: \(error.localizedDescription)")
             }
         case .serverError(_, let reason):
             return .message(reason ?? "Server returned an error.")
-        case .invalidUrl:
-            return .message("Invalid server URL.")
         case .decodingError:
             return .message("Failed to decode server response.")
         case .unknown(let err):
