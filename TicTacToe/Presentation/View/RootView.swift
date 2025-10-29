@@ -6,22 +6,14 @@ import SwiftUI
 
 struct RootView: View {
     @StateObject private var coordinator = AppCoordinator()
-    
+
     var body: some View {
 
-        let currentUserService = ContainerProvider.shared.resolve(CurrentUserServiceProtocol.self)
-        let gameService = ContainerProvider.shared.resolve(GameServiceProtocol.self)
-        let userService = ContainerProvider.shared.resolve(UserServiceProtocol.self)
-
-        let sessionService = SessionService(currentUserService: currentUserService,
-                                            gameService: gameService,
-                                            userService: userService,
-                                            coordinator: coordinator)
-
+        let container = ContainerProvider.shared
+        let sessionService = container.resolve(SessionServiceProtocol.self)
         let apiStrategy = ApiErrorHandlingStrategy(sessionService: sessionService)
-        let errorHandler = ErrorHandler(strategy: apiStrategy)
-        
-        let viewModelFactory = ViewModelFactory(container: .shared,
+        let errorHandler = ErrorHandler(strategy: apiStrategy, coordinator: coordinator)
+        let viewModelFactory = ViewModelFactory(container: container,
                                                 coordinator: coordinator,
                                                 errorHandler: errorHandler)
 
@@ -39,6 +31,8 @@ struct RootView: View {
                         CurrentGameView(gameId: id, coordinator: coordinator, viewModelFactory: viewModelFactory)
                     case .games:
                         GamesContainerView(coordinator: coordinator, viewModelFactory: viewModelFactory)
+                    case .leaderboard:
+                        LeaderboardView(coordinator: coordinator, viewModelFactory: viewModelFactory)
                     }
                 }
         }
