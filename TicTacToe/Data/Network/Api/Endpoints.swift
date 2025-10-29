@@ -16,6 +16,11 @@ enum Endpoints {
     case getGame(UUID)
     case makeMove(UUID)
     case getUser(UUID)
+    case finishedGames
+    case refreshAccess
+    case refreshRefresh
+    case getMe
+    case topPlayers
 
     var path: String {
         switch self {
@@ -28,6 +33,15 @@ enum Endpoints {
         case .getGame(let id): return "/game/\(id.uuidString)"
         case .makeMove(let id): return "/game/\(id.uuidString)/move"
         case .getUser(let id): return "/user/\(id.uuidString)"
+        case .finishedGames: return "/games/finished"
+        case .refreshAccess: return "/token/refresh-access"
+        case .refreshRefresh: return "/token/refresh-refresh"
+        case .getMe: return "/user/me"
+        case .topPlayers: return "/top-players"
         }
+    }
+    
+    var url: String {
+        return Endpoints.baseURL + self.path
     }
 }
