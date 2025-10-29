@@ -30,7 +30,14 @@ final class UserService: UserServiceProtocol {
     func getAllUsers() async throws -> [UserDomain] {
         return try await userRepository.getAll()
     }
-
+    
+    func update(user: UserDomain) async throws {
+        guard try await userRepository.get(byLogin: user.login) != nil else {
+            throw DatabaseError.userNotFound
+        }
+        try await userRepository.update(user: user)
+    }
+    
     func deleteUser(user: UserDomain) async throws {
         guard try await userRepository.get(byId: user.id) != nil else {
             throw DatabaseError.userNotFound
@@ -38,10 +45,7 @@ final class UserService: UserServiceProtocol {
         try await userRepository.delete(user: user)
     }
     
-    func update(user: UserDomain) async throws {
-        guard try await userRepository.get(byLogin: user.login) != nil else {
-            throw DatabaseError.userNotFound
-        }
-        try await userRepository.update(user: user)
+    func deleteAllUsers() async throws {
+        try await userRepository.deleteAll()
     }
 }

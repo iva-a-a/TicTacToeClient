@@ -11,4 +11,5 @@ protocol UserServiceProtocol {
     func getAllUsers() async throws -> [UserDomain]
     func update(user: UserDomain) async throws
     func deleteUser(user: UserDomain) async throws
+    func deleteAllUsers() async throws
 }
