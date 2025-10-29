@@ -28,7 +28,7 @@ final class InProgressGamesViewModel: BaseViewModel, GamesFetchable {
         super.init(errorHandler: errorHandler)
     }
 
-    func fetchUnfinishedGames() {
+    func fetchInProgressGames() {
         performWithLoading {
             await self.fetchGamesFromAPI {
                 try await self.apiService.getInProgressGames()

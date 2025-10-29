@@ -18,5 +18,9 @@ extension AvailableGamesViewModel: @MainActor GamesListViewModelProtocol {
 }
 
 extension InProgressGamesViewModel: @MainActor GamesListViewModelProtocol {
-    func fetchGames() { fetchUnfinishedGames() }
+    func fetchGames() { fetchInProgressGames() }
+}
+
+extension FinishedGamesViewModel: @MainActor GamesListViewModelProtocol {
+    func fetchGames() { fetchFinishedGames() }
 }

@@ -27,7 +27,7 @@ final class NewGameViewModel: BaseViewModel, @MainActor HasCurrentUserService {
         performWithLoading {
             await self.withCurrentUser { me in
                 let request = NewGameRequestDto(creatorLogin: me.login, playWithAI: withAI)
-                let dto = try await self.apiService.createGame(request)
+                let dto = try await self.apiService.createGame(request: request)
                 let domain = GameMapper.toDomain(dto)
                 self.coordinator.navigate(to: .currentGame(id: domain.id))
             }

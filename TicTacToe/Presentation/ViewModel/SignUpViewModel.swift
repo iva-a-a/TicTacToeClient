@@ -37,7 +37,7 @@ final class SignUpViewModel: BaseViewModel {
                 Task {
                     do {
                         let dto = SignUpRequestDto(login: self.login, password: self.password)
-                        let userIdDto = try await self.apiService.signUp(dto)
+                        let userIdDto = try await self.apiService.signUp(request: dto)
                         let newUser = UserMapper.toDomain(UserDto(id: userIdDto.id, login: dto.login),
                                                           password: dto.password)
                         try await self.userService.createUser(user: newUser)
