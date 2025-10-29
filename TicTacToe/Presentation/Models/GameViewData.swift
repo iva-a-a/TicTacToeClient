@@ -11,6 +11,7 @@ struct GameViewData: Identifiable {
     let board: BoardViewData
     let withAI: Bool
     let creator: String
+    let dateCreation: String
 }
 
 struct PlayerViewData: Identifiable {
