@@ -4,37 +4,39 @@
 
 import Foundation
 
-public enum GameStateDomain: Codable, Sendable, Equatable {
+enum GameStateDomain: Codable, Sendable, Equatable {
     case waitingForPlayers
     case playerTurn(UUID)
     case draw
     case winner(UUID)
 }
 
-public struct PlayerDomain: Codable, Sendable {
-    public let id: UUID
-    public var login: String?
-    public let tile: TileDomain
+struct PlayerDomain: Codable, Sendable {
+    let id: UUID
+    var login: String?
+    let tile: TileDomain
     
-    public init(id: UUID, login: String? = nil, tile: TileDomain) {
+    init(id: UUID, login: String? = nil, tile: TileDomain) {
         self.id = id
         self.login = login
         self.tile = tile
     }
 }
 
-public struct GameDomain: Sendable {
-    public let board: BoardDomain
-    public let id: UUID
-    public let state: GameStateDomain
-    public let players: [PlayerDomain]
-    public let withAI: Bool
+struct GameDomain: Sendable {
+    let board: BoardDomain
+    let id: UUID
+    let state: GameStateDomain
+    let players: [PlayerDomain]
+    let withAI: Bool
+    let dateСreation: String
     
-    public init(id: UUID, board: BoardDomain, state: GameStateDomain = .waitingForPlayers, players: [PlayerDomain] = [], withAI: Bool) {
+    init(id: UUID, board: BoardDomain, state: GameStateDomain = .waitingForPlayers, players: [PlayerDomain] = [], withAI: Bool, dateCreation: String) {
         self.id = id
         self.board = board
         self.state = state
         self.players = players
         self.withAI = withAI
+        self.dateСreation = dateCreation
     }
 }

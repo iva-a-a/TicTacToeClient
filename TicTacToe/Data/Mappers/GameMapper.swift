@@ -25,7 +25,8 @@ struct GameMapper {
                           board: board,
                           state: state,
                           players: players,
-                          withAI: entity.with_AI)
+                          withAI: entity.with_AI,
+                          dateCreation: entity.date_creation ?? Date().description)
     }
     
     static func toEntity(_ domain: GameDomain, context: NSManagedObjectContext) -> GameEntity {
@@ -47,6 +48,7 @@ struct GameMapper {
         entity.winner_id = winnerId
         entity.is_draw = isDraw
         entity.with_AI = domain.withAI
+        entity.date_creation = domain.dateСreation
         
         return entity
     }
@@ -60,7 +62,8 @@ struct GameMapper {
                           board: board,
                           state: state,
                           players: players,
-                          withAI: dto.withAI)
+                          withAI: dto.withAI,
+                          dateCreation: dto.dateСreation)
     }
     
     static func toDto(_ domain: GameDomain) -> GameDto {
@@ -72,7 +75,8 @@ struct GameMapper {
                        board: boardDto,
                        state: state,
                        players: playersDto,
-                       withAI: domain.withAI)
+                       withAI: domain.withAI,
+                       dateСreation: domain.dateСreation)
     }
 }
 

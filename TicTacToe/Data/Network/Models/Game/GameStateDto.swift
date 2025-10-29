@@ -3,13 +3,12 @@
 //  TicTacToe
 
 import Foundation
-
 enum GameStateDto: Codable, Equatable {
     case waitingForPlayers
     case playerTurn(UUID)
     case draw
     case winner(UUID)
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
         case playerId
@@ -26,15 +25,13 @@ enum GameStateDto: Codable, Equatable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(StateType.self, forKey: .type)
-        
+
         switch type {
-        case .waitingForPlayers:
-            self = .waitingForPlayers
+        case .waitingForPlayers: self = .waitingForPlayers
         case .playerTurn:
             let playerId = try container.decode(UUID.self, forKey: .playerId)
             self = .playerTurn(playerId)
-        case .draw:
-            self = .draw
+        case .draw: self = .draw
         case .winner:
             let winnerId = try container.decode(UUID.self, forKey: .winnerId)
             self = .winner(winnerId)
@@ -43,7 +40,7 @@ enum GameStateDto: Codable, Equatable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
+
         switch self {
         case .waitingForPlayers:
             try container.encode(StateType.waitingForPlayers, forKey: .type)

@@ -10,4 +10,5 @@ struct GameDto: Codable {
     let state: GameStateDto
     let players: [PlayerDto]
     let withAI: Bool
+    let dateСreation: String
 }

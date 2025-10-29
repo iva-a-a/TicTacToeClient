@@ -1,9 +1,9 @@
 //
-//  AvailableGamesDto.swift
+//  GamesDto.swift
 //  TicTacToe
 
 import Foundation
 
-struct AvailableGamesDto: Codable {
+struct GamesDto: Codable {
     let games: [GameDto]
 }
