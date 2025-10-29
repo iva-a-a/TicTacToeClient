@@ -11,11 +11,11 @@ protocol GamesFetchable: ObservableObject {
     var apiService: ApiServiceProtocol { get }
     var currentUserService: CurrentUserServiceProtocol { get }
     
-    func fetchGamesFromAPI(fetch: @escaping () async throws -> AvailableGamesDto) async
+    func fetchGamesFromAPI(fetch: @escaping () async throws -> GamesDto) async
 }
 
 extension GamesFetchable {
-    func fetchGamesFromAPI(fetch: @escaping () async throws -> AvailableGamesDto) async {
+    func fetchGamesFromAPI(fetch: @escaping () async throws -> GamesDto) async {
         do {
             guard let me = try await currentUserService.getCurrentUser() else { return }
             let dto = try await fetch()
