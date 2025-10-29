@@ -33,6 +33,8 @@ struct GamesContainerView: View {
                     AvailableGamesView(coordinator: coordinator, viewModelFactory: viewModelFactory)
                 case .inProgress:
                     InProgressGamesView(coordinator: coordinator, viewModelFactory: viewModelFactory)
+                case .finished:
+                    FinishedGamesView(coordinator: coordinator, viewModelFactory: viewModelFactory)
                 }
             }
             .transition(.opacity.combined(with: .slide))
@@ -73,10 +75,25 @@ private extension GamesContainerView {
         .cornerRadius(6)
     }
     
+    var leaderboardButton: some View {
+        Button {
+            coordinator.navigate(to: .leaderboard)
+        } label: {
+            Label("Leaderboard", systemImage: "list.number")
+                .font(.subheadline)
+        }
+        .padding(.vertical, 8)
+        .padding(.horizontal, 12)
+        .background(Color.blue.opacity(0.1))
+        .foregroundColor(.blue)
+        .cornerRadius(6)
+    }
+
     var toolbarContent: some ToolbarContent {
         Group {
             ToolbarItem(placement: .navigationBarLeading) { logoutButton }
             ToolbarItem(placement: .navigationBarTrailing) { createGameButton }
+            ToolbarItem(placement: .bottomBar) { leaderboardButton }
         }
     }
 }
@@ -84,11 +101,13 @@ private extension GamesContainerView {
 enum GamesTab: CaseIterable {
     case available
     case inProgress
+    case finished
     
     var title: String {
         switch self {
         case .available: return "Available"
         case .inProgress: return "My Active"
+        case .finished: return "History"
         }
     }
 }
