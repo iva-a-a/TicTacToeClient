@@ -8,7 +8,7 @@ struct GameViewMapper {
     
     static func toViewData(_ domain: GameDomain, currentUserId: UUID?) -> GameViewData {
     
-        let playersView = domain.players.map { PlayerViewData(id: $0.id, login: $0.login ?? "Unknown", tile: tileForView(tileDomain: $0.tile)) }
+        let playersView = domain.players.map { PlayerViewData(id: $0.id, login: $0.login ?? "AI", tile: tileForView(tileDomain: $0.tile)) }
 
         let state = stateForView(currentUserId: currentUserId, state: domain.state, players: domain.players)
 
@@ -22,7 +22,8 @@ struct GameViewMapper {
             state: state,
             board: boardView,
             withAI: domain.withAI,
-            creator: creator ?? "Unknown"
+            creator: creator ?? "Unknown",
+            dateCreation: dateForView(domain.dateСreation)
         )
     }
     
@@ -63,4 +64,20 @@ struct GameViewMapper {
             }
         }
     }
+    
+    private static func dateForView(_ dateString: String) -> String {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        
+        if let date = formatter.date(from: dateString) {
+            let displayFormatter = DateFormatter()
+            displayFormatter.dateStyle = .medium
+            displayFormatter.timeStyle = .short
+            displayFormatter.locale = Locale.current
+            return displayFormatter.string(from: date)
+        } else {
+            return dateString
+        }
+    }
+
 }
