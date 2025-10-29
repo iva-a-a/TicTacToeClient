@@ -10,4 +10,5 @@ enum AppScreen: Hashable {
     case newGame
     case currentGame(id: UUID)
     case games
+    case leaderboard
 }
