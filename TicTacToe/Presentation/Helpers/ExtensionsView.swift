@@ -65,6 +65,9 @@ extension ViewState {
         switch self {
         case .yourTurn: return .yellow
         case .waitingForPlayers: return .orange
+        case .opponentsTurn(login: _): return .black
+        case .defeat: return .red
+        case .victory: return .green
         default: return .gray
         }
     }
