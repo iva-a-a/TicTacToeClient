@@ -18,7 +18,6 @@ final class CurrentUserRepository: CurrentUserRepositoryProtocol {
             let request: NSFetchRequest<CurrentUserEntity> = CurrentUserEntity.fetchRequest()
             let all = try context.fetch(request)
             all.forEach { context.delete($0) }
-
             _ = CurrentUserMapper.toEntity(user, context: context)
             try context.save()
         }

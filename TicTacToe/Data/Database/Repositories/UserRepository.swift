@@ -57,9 +57,23 @@ final class UserRepository: UserRepositoryProtocol {
             let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
             request.predicate = NSPredicate(format: "login == %@", user.login as CVarArg)
             guard let entity = try context.fetch(request).first else {
-                throw DatabaseError.userNotFound
+                return
             }
             context.delete(entity)
+            try context.save()
+        }
+    }
+    
+    func deleteAll() async throws {
+        let context = self.context
+        try await context.perform {
+            let fetchRequest: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
+            let entities = try context.fetch(fetchRequest)
+            
+            for entity in entities {
+                context.delete(entity)
+            }
+            
             try context.save()
         }
     }
@@ -70,11 +84,9 @@ final class UserRepository: UserRepositoryProtocol {
             let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
             request.predicate = NSPredicate(format: "login == %@", user.login as CVarArg)
             request.fetchLimit = 1
-
             guard let entity = try context.fetch(request).first else {
-                throw DatabaseError.userNotFound
+                return
             }
-
             entity.id = user.id
             entity.password = user.password
             try context.save()

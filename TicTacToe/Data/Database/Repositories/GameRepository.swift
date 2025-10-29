@@ -12,23 +12,22 @@ final class GameRepository: GameRepositoryProtocol {
         self.context = context
     }
     
-    func create(game: GameDomain) async throws -> GameDomain {
+    func create(game: GameDomain) async throws {
         let context = self.context
         return try await context.perform {
-            let entity = GameMapper.toEntity(game, context: context)
+            let _ = GameMapper.toEntity(game, context: context)
             try context.save()
-            return GameMapper.toDomain(entity)
         }
     }
     
-    func update(game: GameDomain) async throws -> GameDomain {
+    func update(game: GameDomain) async throws {
         let context = self.context
         return try await context.perform {
             let request: NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
             request.predicate = NSPredicate(format: "id == %@", game.id as CVarArg)
             
             guard let entity = try context.fetch(request).first else {
-                return game
+                return
             }
             
             let (state, currentTurnPlayerId, winnerId, isDraw) = StateMapper.toEntity(game.state)
@@ -46,7 +45,6 @@ final class GameRepository: GameRepositoryProtocol {
             entity.with_AI = game.withAI
             
             try context.save()
-            return GameMapper.toDomain(entity)
         }
     }
 
@@ -78,6 +76,18 @@ final class GameRepository: GameRepositoryProtocol {
                 context.delete(entity)
                 try context.save()
             }
+        }
+    }
+    
+    func deleteAll() async throws {
+        let context = self.context
+        try await context.perform {
+            let fetchRequest: NSFetchRequest<GameEntity> = GameEntity.fetchRequest()
+            let entities = try context.fetch(fetchRequest)
+            for entity in entities {
+                context.delete(entity)
+            }
+            try context.save()
         }
     }
 }

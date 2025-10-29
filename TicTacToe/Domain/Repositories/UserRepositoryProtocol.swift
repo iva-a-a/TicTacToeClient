@@ -11,4 +11,5 @@ protocol UserRepositoryProtocol {
     func getAll() async throws -> [UserDomain]
     func update(user: UserDomain) async throws
     func delete(user: UserDomain) async throws
+    func deleteAll() async throws
 }
