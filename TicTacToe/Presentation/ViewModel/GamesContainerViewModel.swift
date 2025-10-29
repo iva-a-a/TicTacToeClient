@@ -25,6 +25,7 @@ final class GamesContainerViewModel: BaseViewModel {
         performWithLoading {
             do {
                 try await self.sessionService.resetSession()
+                self.coordinator.reset()
             } catch {
                 await self.handleError(error)
             }
